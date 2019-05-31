@@ -1,4 +1,5 @@
 const express = require('express')
+const cookieSession = require('cookie-session')
 const proxy = require('http-proxy-middleware');
 const app = express()
 const cp = require('child_process')
@@ -7,6 +8,13 @@ const kill = require('tree-kill')
 const Docker = require('dockerode');
 const url = require('url')
 const retry = require('async-retry')
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['SECRIT1', 'SECRIT2'],
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 
 // /**
 //  * Custom proxy for containers
@@ -22,11 +30,21 @@ const retry = require('async-retry')
 // app.use(myProxy); // add the proxy to express
 
 app.get('/', async (req, res) => {
-  // spin up a new notebook
-  const spawn = cp.spawnSync('docker', ['run', '-d', '-p', '8888', 'psuastro528/notebook'])
-  // save to store
-  containerId = spawn.stdout.toString().trim()
-  res.redirect(`/${containerId}`)
+  // first look for the session
+  if (req.session.container) {
+    // redirect to the jupyter notebook
+    res.redirect(`/${req.session.container}`)
+  }
+  else {
+    // spin up a new notebook
+    const spawn = cp.spawnSync('docker', ['run', '-d', '-p', '8888', 'psuastro528/notebook'])
+    // save to store
+    containerId = spawn.stdout.toString().trim()
+    // update the users session
+    req.session.container = containerId
+    // redirect to the jupyter notebook
+    res.redirect(`/${containerId}`)
+  }
 })
 
 app.get('/:containerId/logs', async (req, res) => {
