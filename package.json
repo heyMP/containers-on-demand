@@ -1,0 +1,20 @@
+{
+  "name": "jupyter-notebooks-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "async-retry": "^1.2.3",
+    "dockerode": "^2.5.8",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^0.19.1",
+    "node-docker-api": "^1.1.22",
+    "tree-kill": "^1.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "scripts": {
+    "dev": "nodemon index.js"
+  }
+}
