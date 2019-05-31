@@ -1,11 +1,11 @@
 require('dotenv').config()
 const express = require('express')
 const cookieSession = require('cookie-session')
-const proxy = require('http-proxy-middleware');
+// const proxy = require('http-proxy-middleware');
 const app = express()
 const cp = require('child_process')
-const path = require('path')
-const kill = require('tree-kill')
+// const path = require('path')
+// const kill = require('tree-kill')
 const Docker = require('dockerode');
 const retry = require('async-retry')
 const PORT = process.env.PORT || 3000
