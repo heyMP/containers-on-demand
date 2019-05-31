@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const cookieSession = require('cookie-session')
 const proxy = require('http-proxy-middleware');
@@ -8,6 +9,7 @@ const kill = require('tree-kill')
 const Docker = require('dockerode');
 const url = require('url')
 const retry = require('async-retry')
+const PORT = process.env.PORT || 3000
 
 app.use(cookieSession({
   name: 'session',
@@ -16,71 +18,57 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 
-// /**
-//  * Custom proxy for containers
-//  */
-// var proxyTable = {
-//   'localhost:3000/69996eea564b/ui': 'http://localhost:32798'
-// };
-// var options = {
-//   target: 'http://localhost:3000',
-//   router: proxyTable
-// };
-// var myProxy = proxy(options);
-// app.use(myProxy); // add the proxy to express
-
 app.get('/', async (req, res) => {
+  let container = ''
   // first look for the session
-  if (req.session.container) {
-    // redirect to the jupyter notebook
-    res.redirect(`/${req.session.container}`)
-  }
-  else {
+  if (!req.session.container) {
     // spin up a new notebook
     const spawn = cp.spawnSync('docker', ['run', '-d', '-p', '8888', 'psuastro528/notebook'])
     // save to store
-    containerId = spawn.stdout.toString().trim()
+    const output = spawn.stdout.toString().trim()
+    const containerId = /[a-zA-Z0-9_.]{64}/g.exec(output)[0]
     // update the users session
     req.session.container = containerId
     // redirect to the jupyter notebook
-    res.redirect(`/${containerId}`)
+    container = containerId
+    // if the user specified a repo then clone it in
+    if (req.query.repo) {
+      const spawnCloneRepo = cp.spawnSync('docker', ['exec', containerId, 'git', 'clone', req.query.repo])
+    }
   }
-})
-
-app.get('/:containerId/logs', async (req, res) => {
-  const { containerId } = req.params
-  const logs = getContainerLogs(containerId)
-  res.send(logs)
-})
-
-app.get('/:containerId/port', async (req, res) => {
-  const { containerId } = req.params
-  const port = await getContainerPort(containerId)
-  res.send(port)
-})
-
-app.get('/:containerId/token', async (req, res) => {
-  const { containerId } = req.params
-  const token = getJupyterToken(containerId)
-  res.json(token)
-})
-
-app.get('/:containerId', async (req, res) => {
-  const { containerId } = req.params
-  const port = await getContainerPort(containerId)
-  const token = await getJupyterToken(containerId)
+  // if there is an outstanding session then use that one
+  else {
+    container = req.session.container
+  }
+  const port = getContainerExposedPort(container, '8888')
+  if (!port) {
+    res.redirect('/new')
+  }
+  const token = await getJupyterToken(container)
+  // redirect to active container
   res.redirect(`http://127.0.0.1:${port}/?token=${token}`)
 })
 
-const getContainerPort = (container) => {
-  return new Promise((res, rej) => {
-    const _container = ensureContainerObject(container)
-    _container.inspect(function (err, data) {
-      if (data) {
-        res(data.NetworkSettings.Ports['8888/tcp'][0].HostPort)
-      }
-    });
-  })
+app.get('/new', async (req, res) => {
+  req.session.container = null
+  res.redirect(`${req.url.replace('/new', '/')}`)
+})
+
+// app.get('/rstudio', async (req, res) => {
+//   const spawn = cp.spawnSync('docker', ['run', '-d', '-p', '8787', '-e', 'DISABLE_AUTH=true', 'rocker/rstudio'])
+//   // save to store
+//   const output = spawn.output.toString().trim()
+//   const containerId = /[a-zA-Z0-9_.]{64}/g.exec(output)[0]
+//   // get port
+//   const port = getContainerExposedPort(containerId, '8787')
+//   // redirect to the jupyter notebook
+//   res.redirect(`http://localhost:${port}`)
+// })
+
+const getContainerExposedPort = (container, port) => {
+  const spawn = cp.spawnSync('docker', ['port', container, port])
+  const output = spawn.output.toString().trim()
+  return /[0-9]{4,}/g.exec(output)[0]
 }
 
 const ensureContainerObject = (container) => {
@@ -112,4 +100,4 @@ const getJupyterToken = async (containerId) => {
   })
 }
 
-app.listen(3000, () => console.log(`Example app listening on port ${3000}!`))
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
