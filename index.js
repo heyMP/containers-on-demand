@@ -7,7 +7,6 @@ const cp = require('child_process')
 const path = require('path')
 const kill = require('tree-kill')
 const Docker = require('dockerode');
-const url = require('url')
 const retry = require('async-retry')
 const PORT = process.env.PORT || 3000
 
@@ -21,7 +20,7 @@ app.use(cookieSession({
 app.get('/', async (req, res) => {
   let container = ''
   // first look for the session
-  if (!req.session.container) {
+  if (!req.session || !req.session.container) {
     // spin up a new notebook
     const spawn = cp.spawnSync('docker', ['run', '-d', '-p', '8888', 'psuastro528/notebook'])
     // save to store
@@ -33,7 +32,7 @@ app.get('/', async (req, res) => {
     container = containerId
     // if the user specified a repo then clone it in
     if (req.query.repo) {
-      const spawnCloneRepo = cp.spawnSync('docker', ['exec', containerId, 'git', 'clone', req.query.repo])
+      cp.spawnSync('docker', ['exec', containerId, 'git', 'clone', req.query.repo])
     }
   }
   // if there is an outstanding session then use that one
@@ -46,12 +45,18 @@ app.get('/', async (req, res) => {
   }
   const token = await getJupyterToken(container)
   // redirect to active container
-  res.redirect(`http://127.0.0.1:${port}/?token=${token}`)
+  res.redirect(`http://127.0.0.1:${port}/${req.query.path || ''}?token=${token}`)
 })
 
 app.get('/new', async (req, res) => {
   req.session.container = null
   res.redirect(`${req.url.replace('/new', '/')}`)
+})
+
+app.get('/logout', async (req, res) => {
+  req.session.container = null
+  req.session = null
+  res.send('logged out')
 })
 
 // app.get('/rstudio', async (req, res) => {
