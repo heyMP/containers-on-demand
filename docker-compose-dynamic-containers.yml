@@ -1,0 +1,67 @@
+version: '3'
+services:
+  notebook:
+    image: psuastro528/notebook
+    labels:
+      - 'traefik.frontend.rule=Host:notebook.docker.localhost'
+      - traefik.port=8888
+  e67551f0-855a-11e9-b657-6b460a5df8f5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:e67551f0-855a-11e9-b657-6b460a5df8f5.docker.localhost
+      - traefik.port=8888
+  669093e0-855b-11e9-b657-6b460a5df8f5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:669093e0-855b-11e9-b657-6b460a5df8f5.docker.localhost
+      - traefik.port=8888
+  8efe7630-855b-11e9-b657-6b460a5df8f5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:8efe7630-855b-11e9-b657-6b460a5df8f5.docker.localhost
+      - traefik.port=8888
+  aa1f0ab0-855b-11e9-b657-6b460a5df8f5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:aa1f0ab0-855b-11e9-b657-6b460a5df8f5.docker.localhost
+      - traefik.port=8888
+  b51bb1c0-855b-11e9-b657-6b460a5df8f5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:b51bb1c0-855b-11e9-b657-6b460a5df8f5.docker.localhost
+      - traefik.port=8888
+  f4bc73a0-855b-11e9-b657-6b460a5df8f5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:f4bc73a0-855b-11e9-b657-6b460a5df8f5.docker.localhost
+      - traefik.port=8888
+  5343f9c0-855c-11e9-90d8-cdbed72ad959:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:5343f9c0-855c-11e9-90d8-cdbed72ad959.docker.localhost
+      - traefik.port=8888
+  6726eb00-855c-11e9-b3cb-1b8cc9eae8b5:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:6726eb00-855c-11e9-b3cb-1b8cc9eae8b5.docker.localhost
+      - traefik.port=8888
+  815ecd30-855c-11e9-bdf5-a18900ee2496:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:815ecd30-855c-11e9-bdf5-a18900ee2496.docker.localhost
+      - traefik.port=8888
+  a35a4b80-855c-11e9-9bc9-f9db3ae4f917:
+    image: psuastro528/notebook
+    labels:
+      - >-
+        traefik.frontend.rule=Host:a35a4b80-855c-11e9-9bc9-f9db3ae4f917.docker.localhost
+      - traefik.port=8888
