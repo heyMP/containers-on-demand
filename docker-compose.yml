@@ -13,13 +13,13 @@ services:
   whoami:
     image: containous/whoami # A container that exposes an API to show its IP address
     labels:
-      - "traefik.frontend.rule=Host:whoami.docker.localhost"
+      - "traefik.frontend.rule=Host:whoami.${HOST}"
   
   server:
     build: ./server
     volumes:
       - ./docker-compose-dynamic-containers.yml:/usr/src/app/docker-compose-dynamic-containers.yml
     labels:
-      - "traefik.frontend.rule=Host:server.docker.localhost"
+      - "traefik.frontend.rule=Host:server.${HOST}"
       - "traefik.port=3000"
     command: 'npm start'
