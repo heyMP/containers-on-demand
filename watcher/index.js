@@ -7,6 +7,5 @@ fs.watchFile(path.join(__dirname, '../', 'docker-compose-dynamic-containers.yml'
   const spawn = cp.spawnSync('docker-compose', ['-f', 'docker-compose.yml', '-f', 'docker-compose-dynamic-containers.yml', 'up', '-d', '--remove-orphans'], {
     cwd: path.join(__dirname, '../')
   })
-
-  console.log(spawn)
+  console.log(spawn.output.toString())
 })
