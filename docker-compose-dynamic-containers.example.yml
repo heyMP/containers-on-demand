@@ -1,7 +1,0 @@
-version: '3'
-services:
-  notebook:
-    image: psuastro528/notebook
-    labels:
-      - 'traefik.frontend.rule=Host:notebook.docker.localhost'
-      - traefik.port=8888
