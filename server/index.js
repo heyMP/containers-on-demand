@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const yaml = require('js-yaml');
 const path = require('path')
 const fs = require('fs')
@@ -16,6 +17,8 @@ redisClient.on('connect', function() {
 redisClient.on('exit', function() {
   console.log('exited to db')
 })
+
+app.use(cors())
 
 app.get('/', async (req, res) => {
   const path = (req.query.path) ? '/' + req.query.path : ''

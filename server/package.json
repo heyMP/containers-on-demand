@@ -6,6 +6,7 @@
   "dependencies": {
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "cors": "^2.8.5",
     "js-yaml": "^3.13.1",
     "uuid": "^3.3.2",
     "fetch-retry": "^2.2.0",

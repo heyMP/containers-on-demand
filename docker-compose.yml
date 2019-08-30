@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   reverse-proxy:
@@ -10,22 +10,16 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
-  whoami:
-    image: containous/whoami # A container that exposes an API to show its IP address
-    labels:
-      - "traefik.frontend.rule=Host:whoami.${HOST}"
-  
   server:
     build: ./server
     depends_on:
       - redis
     labels:
-      - "traefik.frontend.rule=Host:server.${HOST}"
+      - "traefik.frontend.rule=Host:server.${HOST:-docker.localhost}"
       - "traefik.port=3000"
     command: 'npm start'
     volumes:
       - ./server/index.js:/usr/src/app/index.js
-
   
   runner:
     build: ./runner
