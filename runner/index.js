@@ -18,7 +18,7 @@ redisClient.subscribe('new-container', function(err) {
 
 redisClient.on('message', function (channel, message) {
   const newContainer = JSON.parse(message)
-  let command = ['run', '-d', '--network', 'jupyter-notebooks-service_default']
+  let command = ['run', '-d', '--network', 'containers-on-demand_default']
   newContainer.labels.forEach(label => {
     command = [...command, '-l', label]
   });
@@ -28,15 +28,13 @@ redisClient.on('message', function (channel, message) {
     })
   }
   command = [...command, newContainer.image]
-  console.log('command:', command.join(' '))
   const cpStartContainer = cp.spawnSync('docker', command)
   const output = cpStartContainer.output.toString()
   // get the new container id from output
   const newContainerId = /([A-Za-b0-9])\w+/g.exec(output)[0]
-  const cpGetLogs = cp.spawn('docker', ['logs', newContainerId]);
-  cpGetLogs.stdout.on('data', function(data) {
-      console.log(data.toString()); 
-  });
+  if (newContainer.repo) {
+    const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
+  }
 })
 
 // fs.watchFile(path.join(__dirname, '../', 'docker-compose-dynamic-containers.yml'), (curr, prev) => {
