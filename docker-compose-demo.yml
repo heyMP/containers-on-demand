@@ -4,5 +4,6 @@ services:
 
   demo:
     build: ./demo
-    volumes:
-      - .:/usr/share/nginx/html
+    labels:
+      - "traefik.frontend.rule=Host:demo.${HOST:-docker.localhost}"
+      - "traefik.port=80"
