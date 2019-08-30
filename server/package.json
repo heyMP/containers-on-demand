@@ -8,7 +8,8 @@
     "express": "^4.17.1",
     "js-yaml": "^3.13.1",
     "uuid": "^3.3.2",
-    "fetch-retry": "^2.2.0"
+    "fetch-retry": "^2.2.0",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"

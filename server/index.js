@@ -7,6 +7,15 @@ const fs = require('fs')
 const uuid = require('uuid/v1');
 const PORT = process.env.PORT || 3000 
 const HOST = process.env.HOST || 'docker.localhost'
+const redis = require('redis')
+const redisClient = redis.createClient(6379, 'redis')
+
+redisClient.on('connect', function() {
+  console.log('connected to db')
+})
+redisClient.on('exit', function() {
+  console.log('exited to db')
+})
 
 app.get('/', async (req, res) => {
   const path = (req.query.path) ? '/' + req.query.path : ''
@@ -16,7 +25,7 @@ app.get('/', async (req, res) => {
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
       // wait 10 seconds to allow provisioning
-      await new Promise((res) => setTimeout(() => res(), 10000) )
+      await new Promise((res) => setTimeout(() => res(), 3000) )
       res.redirect(url)
     }
     // if not just return the url
@@ -31,14 +40,13 @@ app.get('/', async (req, res) => {
 const createNewContainer = (options) => {
   // Get document, or throw exception on error
   const id = uuid()
-  let compose = yaml.safeLoad(fs.readFileSync(path.join(__dirname, 'docker-compose-dynamic-containers.yml'), 'utf8'));
-  let newContainer = {}
   newContainer = {
+    id,
     image: options.image,
     labels: [
       `traefik.frontend.rule=Host:${id}.${HOST}`,
       `created=${new Date().getTime()}`
-    ],
+    ]
   }
   if (options.port) {
     newContainer.labels = [...newContainer.labels, `traefik.port=${options.port}`]
@@ -46,8 +54,10 @@ const createNewContainer = (options) => {
   if (options.env) {
     newContainer['environment'] = options.env.split(',')
   }
-  compose.services[id] = newContainer
-  fs.writeFileSync(path.join(__dirname, 'docker-compose-dynamic-containers.yml'), yaml.safeDump(compose), 'utf8')
+  if (options.repo) {
+    newContainer['repo'] = options.repo
+  }
+  redisClient.publish('new-container', JSON.stringify(newContainer))
   return id
 }
 

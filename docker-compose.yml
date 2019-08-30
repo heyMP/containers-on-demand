@@ -17,9 +17,27 @@ services:
   
   server:
     build: ./server
-    volumes:
-      - ./docker-compose-dynamic-containers.yml:/usr/src/app/docker-compose-dynamic-containers.yml
+    depends_on:
+      - redis
     labels:
       - "traefik.frontend.rule=Host:server.${HOST}"
       - "traefik.port=3000"
     command: 'npm start'
+    volumes:
+      - ./server/index.js:/usr/src/app/index.js
+
+  
+  runner:
+    build: ./runner
+    command: 'npm start'
+    depends_on:
+      - redis
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
+      - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
+      - ./runner/index.js:/usr/src/app/index.js
+
+  redis:
+    build: ./redis
+    ports:
+      - 6379:6379
