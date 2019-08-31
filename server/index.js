@@ -23,8 +23,8 @@ app.use(cors())
 app.get('/', async (req, res) => {
   const path = (req.query.path) ? '/' + req.query.path : ''
   try {
-    const id = createNewContainer(req.query)
-    const url = `http://${id}.${HOST}${path}`
+    const { host } = createNewContainer(req.query)
+    const url = `http://${host}`
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
       // wait 10 seconds to allow provisioning
@@ -43,11 +43,13 @@ app.get('/', async (req, res) => {
 const createNewContainer = (options) => {
   // Get document, or throw exception on error
   const id = uuid()
+  const host = `${id}.cod.${options.host}`
   newContainer = {
     id,
     image: options.image,
+    host,
     labels: [
-      `traefik.frontend.rule=Host:${id}.${HOST}`,
+      `traefik.frontend.rule=Host:${host}`,
       `created=${new Date().getTime()}`
     ]
   }
@@ -61,7 +63,7 @@ const createNewContainer = (options) => {
     newContainer['repo'] = options.repo
   }
   redisClient.publish('new-container', JSON.stringify(newContainer))
-  return id
+  return newContainer
 }
 
 // const getJupyterToken = async (containerId) => {

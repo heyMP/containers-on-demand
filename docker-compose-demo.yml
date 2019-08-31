@@ -7,3 +7,5 @@ services:
     labels:
       - "traefik.frontend.rule=Host:demo.${HOST:-docker.localhost}"
       - "traefik.port=80"
+    volumes:
+      - ./demo:/usr/share/nginx/html
