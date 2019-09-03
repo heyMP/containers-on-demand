@@ -16,6 +16,10 @@
         max-width: 900px;
         margin: auto;
       }
+      containers-on-demand {
+        width: 100%;
+        height: 80vh;
+      }
     </style>
   </head>
   <body>
@@ -47,7 +51,8 @@
         et tempor.
       </p>
       <containers-on-demand
-        query="http://server.docker.localhost?host=demo.docker.localhost&host_path=/services/cod&image=heymp/notebook&port=8888&repo=https://github.com/PsuAstro528/lab1-start.git&path=tree/lab1-start&redirect"
+        query="http://server.docker.localhost?host=demo.docker.localhost&host_path=/services/cod&image=heymp/notebook&port=8888&repo=https://github.com/PsuAstro528/lab1-start.git&path=tree/lab1-start"
+        path="notebooks/lab1-start/ex1.ipynb"
         button="Start Lab 1"
       ></containers-on-demand>
       <div class="spacer"></div>
@@ -77,7 +82,8 @@
         et tempor.
       </p>
       <containers-on-demand
-        query="http://server.docker.localhost?image=heymp/notebook&port=8888&repo=https://github.com/PsuAstro528/lab2-start.git&path=tree/lab2-start&redirect"
+        query="http://server.docker.localhost?host=demo.docker.localhost&host_path=/services/cod&image=heymp/notebook&port=8888&repo=https://github.com/PsuAstro528/lab2-start.git"
+        path="notebooks/lab2-start/ex1.ipynb"
         button="Start Lab 2"
       ></containers-on-demand>
       <div class="spacer"></div>
@@ -107,7 +113,8 @@
         et tempor.
       </p>
       <containers-on-demand
-        query="http://server.docker.localhost?image=heymp/notebook&port=8888&repo=https://github.com/PsuAstro528/lab3-start.git&path=tree/lab3-start&redirect"
+        query="http://server.docker.localhost?host=demo.docker.localhost&host_path=/services/cod&image=heymp/notebook&port=8888&repo=https://github.com/PsuAstro528/lab3-start.git"
+        path="notebooks/lab3-start/ex1.ipynb"
         button="Start Lab 3"
       ></containers-on-demand>
       <div class="spacer"></div>

@@ -43,7 +43,7 @@ app.get('/', async (req, res) => {
 const createNewContainer = (options) => {
   // Get document, or throw exception on error
   const id = uuid()
-  const host = `${id}.cod.${options.host}`
+  const host = `${id}.${options.host}`
   newContainer = {
     id,
     image: options.image,

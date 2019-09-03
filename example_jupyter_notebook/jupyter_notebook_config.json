@@ -4,6 +4,11 @@
       "jupyter_nbextensions_configurator": true
     },
     "token": "",
-    "password": ""
+    "password": "",
+    "tornado_settings": {
+      "headers": {
+        "Content-Security-Policy": "frame-ancestors self *.docker.localhost"
+      }
+    }
   }
 }

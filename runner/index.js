@@ -30,10 +30,14 @@ redisClient.on('message', function (channel, message) {
   command = [...command, newContainer.image]
   const cpStartContainer = cp.spawnSync('docker', command)
   const output = cpStartContainer.output.toString()
+  console.log(output)
   // get the new container id from output
-  const newContainerId = /([A-Za-b0-9])\w+/g.exec(output)[0]
+  const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0]
   if (newContainer.repo) {
     const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
+    console.log(cpRepo.output.toString())
+    // let the server know that it's set up
+    redisClient.publish('new-container-complete', JSON.stringify(newContainer.id))
   }
 })
 
