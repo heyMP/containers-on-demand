@@ -2,33 +2,19 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const yaml = require('js-yaml');
-const path = require('path')
-const fs = require('fs')
-const uuid = require('uuid/v1');
+const uuid = require('uuid/v1')
 const PORT = process.env.PORT || 3000 
-const HOST = process.env.HOST || 'docker.localhost'
-const redis = require('redis')
-const redisClient = redis.createClient(6379, 'redis')
-
-redisClient.on('connect', function() {
-  console.log('connected to db')
-})
-redisClient.on('exit', function() {
-  console.log('exited to db')
-})
+const cp = require('child_process')
 
 app.use(cors())
 
-app.get('/', async (req, res) => {
-  const path = (req.query.path) ? '/' + req.query.path : ''
+app.get('/', (req, res) => {
   try {
     const { host } = createNewContainer(req.query)
     const url = `http://${host}`
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
       // wait 10 seconds to allow provisioning
-      await new Promise((res) => setTimeout(() => res(), 3000) )
       res.redirect(url)
     }
     // if not just return the url
@@ -62,24 +48,28 @@ const createNewContainer = (options) => {
   if (options.repo) {
     newContainer['repo'] = options.repo
   }
-  redisClient.publish('new-container', JSON.stringify(newContainer))
+
+  let command = ['run', '-d', '--network', 'containers-on-demand_default']
+  newContainer.labels.forEach(label => {
+    command = [...command, '-l', label]
+  });
+  if (newContainer.environment) {
+    newContainer.environment.forEach(env => {
+      command = [...command, '-e', env]
+    })
+  }
+  command = [...command, newContainer.image]
+  const cpStartContainer = cp.spawnSync('docker', command)
+  const output = cpStartContainer.output.toString()
+  console.log(output)
+  // get the new container id from output
+  const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0]
+  if (newContainer.repo) {
+    const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
+    console.log(cpRepo.output.toString())
+  }
+  
   return newContainer
 }
-
-// const getJupyterToken = async (containerId) => {
-//   return await retry(bail => {
-//     const logs = getContainerLogs(containerId)
-//     // regex for the token and get the first match
-//     const tokenMatch = /\?token=([\w]*)/g.exec(logs)
-//     if (tokenMatch) {
-//       return tokenMatch[1]
-//     }
-//     else {
-//       throw new Error('No logs yet')
-//     }
-//   }, {
-//     retries: 50
-//   })
-// }
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
