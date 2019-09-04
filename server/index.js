@@ -59,6 +59,7 @@ const createNewContainer = (options) => {
     })
   }
   command = [...command, newContainer.image]
+  console.log('command:', command)
   const cpStartContainer = cp.spawnSync('docker', command)
   const output = cpStartContainer.output.toString()
   console.log(output)
