@@ -12,6 +12,13 @@ Clone this repo
 git clone https://github.com/heyMP/containers-on-demand.git && cd containers-on-demand
 ```
 
+Update the example Docker images.
+
+```
+docker pull heymp/notebook
+docker pull heymp/rstudio
+```
+
 Run docker compose
 
 ```bash
