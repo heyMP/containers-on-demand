@@ -2,7 +2,7 @@
 
 This project aims to be a solution for allowing students to create individualized instances of workspaces such as Jupyter Notebooks, RStudio, etc. on demand.
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/QKII2gZ"><a href="//imgur.com/QKII2gZ"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+<img src="demo/demo.gif">
 
 ## Run the demo
 
