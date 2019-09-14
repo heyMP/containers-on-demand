@@ -3,8 +3,13 @@ import { LitElement, html } from "./web_modules/lit-element.js";
 class ContainersOnDemand extends LitElement {
   static get properties() {
     return {
-      query: { type: String },
+      endpoint: { type: String },
+      host: { type: String},
+      image: { type: String},
       path: { type: String },
+      port: { type: String },
+      repo: { type: String },
+      env: { type: String },
       button: { type: String },
       loading: { type: Boolean, reflect: true },
       _url: { type: String }
@@ -12,16 +17,24 @@ class ContainersOnDemand extends LitElement {
   }
   constructor() {
     super();
-    this.query = "";
+    this.endpoint = "";
     this.path = "";
+    this.image = "";
+    this.port = "80";
+    this.repo =""
+    this.env =""
     this._url = "";
     this.button = "";
+    this.host = window.location.host;
     this.loading = false;
   }
   _start() {
     this.loading = true;
-    if (this.query.length > 0) {
-      fetch(this.query)
+    const repo = (this.repo) ? `&repo=${this.repo}` : ''
+    const env = (this.env) ? `&env=${this.env}` : ''
+    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}`
+    if (query.length > 0) {
+      fetch(query)
         .then(res => res.text())
         .then(res => {
           setTimeout(() => (this._url = `${res}/${this.path}`), 4000);
@@ -163,7 +176,7 @@ class ContainersOnDemand extends LitElement {
               </div>
             `
           : html`
-              <button id="button" href=${this.query} @click=${this._start}>
+              <button id="button" @click=${this._start}>
                 ${this.button}
               </button>
             `

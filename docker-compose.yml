@@ -12,7 +12,7 @@ services:
   server:
     build: ./server
     labels:
-      - "traefik.frontend.rule=Host:server.${HOST:-docker.localhost}"
+      - "traefik.frontend.rule=Host:cod.${HOST:-docker.localhost}"
       - "traefik.port=3000"
     command: 'npm start'
     volumes:
