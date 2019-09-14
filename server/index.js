@@ -40,7 +40,12 @@ const createNewContainer = (options) => {
     ]
   }
   if (options.port) {
-    newContainer.labels = [...newContainer.labels, `traefik.port=${options.port}`]
+    newContainer.labels = [
+      ...newContainer.labels,
+      `traefik.port=${options.port}`,
+      `traefik.frontend.headers.customFrameOptionsValue=allow-from ${options.host}`,
+      `traefik.frontend.headers.contentSecurityPolicy=frame-ancestors self ${options.host}`
+    ]
   }
   if (options.env) {
     newContainer['environment'] = options.env.split(',')

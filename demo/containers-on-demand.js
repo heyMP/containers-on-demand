@@ -124,6 +124,25 @@ class ContainersOnDemand extends LitElement {
             opacity: 0;
           }
         }
+        #button {
+          display: inline-flex;
+          width: 80%;
+          margin: auto;
+          max-width: 400px;
+          /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#8efc88+0,52ea52+40,0ca304+100 */
+          background: #8efc88; /* Old browsers */
+          background: -moz-linear-gradient(-45deg,  #8efc88 0%, #52ea52 40%, #0ca304 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(-45deg,  #8efc88 0%,#52ea52 40%,#0ca304 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(135deg,  #8efc88 0%,#52ea52 40%,#0ca304 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8efc88', endColorstr='#0ca304',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+          padding: 2vw;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          font-size: 2vw;
+          text-transform: uppercase;
+          color: black;
+        }
       </style>
       ${this._url
         ? html`
@@ -144,7 +163,7 @@ class ContainersOnDemand extends LitElement {
               </div>
             `
           : html`
-              <button href=${this.query} @click=${this._start}>
+              <button id="button" href=${this.query} @click=${this._start}>
                 ${this.button}
               </button>
             `
