@@ -78,7 +78,7 @@
       <split-book>
         <h2 slot="left-title">Lab Instructions</h2>
         <div slot="left">
-          <h2>Lesson 4 R-Studio</h2>
+          <h2>Lesson 2 R-Studio</h2>
           <p>
             Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
             excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
@@ -112,6 +112,48 @@
           port="8787"
           env="DISABLE_AUTH=true"
           button="Start Lab"
+          repo="https://github.com/annoz0521/DataGathering.git"
+        ></containers-on-demand>
+      </split-book>
+
+      <split-book>
+        <h2 slot="left-title">Lab Instructions</h2>
+        <div slot="left">
+          <h2>Lesson 3 Shiny Apps</h2>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
+            officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
+            Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
+            et tempor.
+          </p>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
+            officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
+            Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
+            et tempor.
+          </p>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
+            officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
+            Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
+            et tempor.
+          </p>
+        </div>
+        <h2 slot="right-title">Shiny Lab</h2>
+        <containers-on-demand
+          slot="right"
+          endpoint="http://cod.docker.localhost"
+          image="rocker/shiny"
+          port="3838"
+          env="DISABLE_AUTH=true"
+          button="Start Lab"
+          path="sample-apps/hello/"
         ></containers-on-demand>
       </split-book>
       <div class="spacer"></div>
