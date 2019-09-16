@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Containers on Demand</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
       body {
         font-size: 18px;
       }
@@ -13,152 +16,104 @@
         margin-top: 4vw;
       }
       .wrapper {
-        max-width: 900px;
         margin: auto;
       }
       containers-on-demand {
+        flex: 1 1 auto;
+        display: flex;
         width: 100%;
-        height: 80vh;
       }
     </style>
   </head>
   <body>
     <div class="wrapper">
-      <h1>Containers on Demand</h1>
-      <h2>Lesson 1</h2>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <containers-on-demand
-        endpoint="http://cod.docker.localhost"
-        image="heymp/notebook"
-        port="8888"
-        path="notebooks/lab1-start/ex1.ipynb"
-        repo="https://github.com/PsuAstro528/lab1-start.git"
-        button="Start Lab 1"
-      ></containers-on-demand>
-      <div class="spacer"></div>
-      <h2>Lesson 2</h2>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <containers-on-demand
-        endpoint="http://cod.docker.localhost"
-        image="heymp/notebook"
-        port="8888"
-        path="notebooks/lab2-start/ex1.ipynb"
-        repo="https://github.com/PsuAstro528/lab2-start.git"
-        button="Start Lab 2"
-      ></containers-on-demand>
-      <div class="spacer"></div>
-      <h2>Lesson 3</h2>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <containers-on-demand
-        endpoint="http://cod.docker.localhost"
-        image="heymp/notebook"
-        port="8888"
-        path="notebooks/lab3-start/ex1.ipynb"
-        repo="https://github.com/PsuAstro528/lab3-start.git"
-        button="Start Lab 3"
-      ></containers-on-demand>
-      <div class="spacer"></div>
-      <h2>Lesson 4 R-Studio</h2>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <p>
-        Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
-        excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
-        dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
-        officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
-        Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
-        et tempor.
-      </p>
-      <containers-on-demand
-        endpoint="http://cod.docker.localhost"
-        image="heymp/rstudio"
-        port="8787"
-        env="DISABLE_AUTH=true"
-        button="Start Lab 4"
-      ></containers-on-demand>
+      <split-book>
+        <h2 slot="left-title">Lab Instructions</h2>
+        <div slot="left">
+          <h2>Lab 1</h2>
+          <p>
+            Before we delve into the meat of the course, we'll practice
+            accessing the assignment via your private git repository ("repo"),
+            cloning the repo on a syste running Jupyter notebook server with a
+            Julia kernel, making some small changes, commiting your changes via
+            git, and pushing those to github. If this is your first time using
+            all of these toosl, then it probably sounds like a lot. The good
+            news is taht before long all of this will become second nature and
+            you'll wonder how you got along without them.
+          </p>
+          <p>
+            In Julia strings are create by enclosing text between double quotes.
+            Single quotes are used to indicate a single character (as opposed to
+            a string of length 1). For example...
+          </p>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor
+            magna officia adipisicing in nulla magna pariatur eiusmod nisi
+            occaecat. Deserunt incididunt cupidatat eiusmod do dolor veniam
+            nulla incididunt et tempor.
+          </p>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor
+            magna officia adipisicing in nulla magna pariatur eiusmod nisi
+            occaecat. Deserunt incididunt cupidatat eiusmod do dolor veniam
+            nulla incididunt et tempor.
+          </p>
+        </div>
+        <h2 slot="right-title">Assignment</h2>
+        <containers-on-demand
+          slot="right"
+          endpoint="http://cod.docker.localhost"
+          image="heymp/notebook"
+          port="8888"
+          path="notebooks/lab1-start/ex1.ipynb"
+          repo="https://github.com/PsuAstro528/lab1-start.git"
+          button="Start Lab"
+        ></containers-on-demand>
+      </split-book>
+
+      <split-book>
+        <h2 slot="left-title">Lab Instructions</h2>
+        <div slot="left">
+          <h2>Lesson 4 R-Studio</h2>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
+            officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
+            Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
+            et tempor.
+          </p>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
+            officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
+            Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
+            et tempor.
+          </p>
+          <p>
+            Adipisicing adipisicing nulla est elit est ipsum. Veniam ad amet
+            excepteur exercitation. Eu veniam amet anim eu duis amet fugiat sunt
+            dolor velit ea aliquip ex sunt. Voluptate dolore pariatur dolor magna
+            officia adipisicing in nulla magna pariatur eiusmod nisi occaecat.
+            Deserunt incididunt cupidatat eiusmod do dolor veniam nulla incididunt
+            et tempor.
+          </p>
+        </div>
+        <h2 slot="right-title">RStudio Lab</h2>
+        <containers-on-demand
+          slot="right"
+          endpoint="http://cod.docker.localhost"
+          image="heymp/rstudio"
+          port="8787"
+          env="DISABLE_AUTH=true"
+          button="Start Lab"
+        ></containers-on-demand>
+      </split-book>
       <div class="spacer"></div>
     </div>
 
