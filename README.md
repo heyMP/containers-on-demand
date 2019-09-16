@@ -3,6 +3,7 @@
 This project aims to be a solution for allowing students to create individualized instances of workspaces such as Jupyter Notebooks, RStudio, etc. on demand.
 
 <img src="demo/demo.gif">
+<img src="demo/shiny-demo.gif">
 
 ## Run the demo
 
