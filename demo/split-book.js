@@ -25,8 +25,13 @@ class SplitBook extends LitElement {
         #left, #right {
           display: flex;
           flex-direction: column;
-          width: 100%;
           width: calc(50% - 5px);
+        }
+        #left {
+          width: calc(40% - 5px);
+        }
+        #right {
+          width: calc(60% - 5px);
         }
         #left .content {
           display: block;

@@ -47,6 +47,23 @@ const createNewContainer = (options) => {
       `traefik.frontend.headers.contentSecurityPolicy=frame-ancestors self ${options.host}`
     ]
   }
+  // Basic Auth
+  if (options.basicAuth) {
+    const getHashedPassword = (username, password) => {
+      const spawn = cp.spawnSync('htpasswd', ['-nb', username, password])
+      return spawn.stdout.toString().trim()
+    }
+    // explod the csv basic auth
+    const basicAuthArry = options.basicAuth
+      .split(',')
+      .map(i => i.split(':'))
+      .map(i => getHashedPassword(...i))
+    // add each auth to traefik
+    newContainer.labels = [
+      ...newContainer.labels,
+      `traefik.frontend.auth.basic.users=${basicAuthArry.join(',')}`
+    ]
+  }
   if (options.env) {
     newContainer['environment'] = options.env.split(',')
   }

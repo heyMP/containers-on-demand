@@ -1,5 +1,8 @@
 FROM node:12
 
+RUN apt-get update
+RUN apt-get install apache2-utils
+
 WORKDIR /usr/src/app
 
 # Install app dependencies

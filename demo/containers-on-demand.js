@@ -11,6 +11,7 @@ class ContainersOnDemand extends LitElement {
       port: { type: String },
       repo: { type: String },
       env: { type: String },
+      basicAuth: { type: String },
       button: { type: String },
       loading: { type: Boolean, reflect: true },
       _url: { type: String }
@@ -23,17 +24,19 @@ class ContainersOnDemand extends LitElement {
     this.image = "";
     this.port = "80";
     this.repo =""
-    this.env =""
-    this._url = "";
+    this.env = ""
     this.button = "";
+    this.basicAuth = "";
     this.host = window.location.host;
     this.loading = false;
+    this._url = "";
   }
   _start() {
     this.loading = true;
     const repo = (this.repo) ? `&repo=${this.repo}` : ''
     const env = (this.env) ? `&env=${this.env}` : ''
-    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}`
+    const basicAuth = (this.basicAuth) ? `&basicAuth=${this.basicAuth}` : ''
+    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}`
     if (query.length > 0) {
       fetch(query)
         .then(res => res.text())
