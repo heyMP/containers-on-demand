@@ -65,6 +65,7 @@ class ContainersOnDemand extends LitElement {
         iframe {
           width: 100%;
           height: 100%;
+          zoom: 0.75;
         }
         #button {
           display: inline-flex;

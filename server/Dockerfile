@@ -1,6 +1,7 @@
 FROM node:12
 
 RUN apt-get update
+# install htpasswd
 RUN apt-get install apache2-utils
 
 WORKDIR /usr/src/app

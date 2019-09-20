@@ -8,14 +8,14 @@ const cp = require('child_process')
 
 app.use(cors())
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const { host } = createNewContainer(req.query)
     const url = `http://${host}`
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
-      // wait 10 seconds to allow provisioning
-      res.redirect(url)
+      // wait 1 second to allow provisioning
+      setTimeout(() => res.redirect(url), 1000)
     }
     // if not just return the url
     else {
@@ -81,15 +81,15 @@ const createNewContainer = (options) => {
     })
   }
   command = [...command, newContainer.image]
-  console.log('command:', command)
+  // console.log('command:', command)
   const cpStartContainer = cp.spawnSync('docker', command)
   const output = cpStartContainer.output.toString()
-  console.log(output)
+  // console.log(output)
   // get the new container id from output
   const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0]
   if (newContainer.repo) {
     const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
-    console.log(cpRepo.output.toString())
+    // console.log(cpRepo.output.toString())
   }
   
   return newContainer
