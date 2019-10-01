@@ -80,6 +80,12 @@ const createNewContainer = (options) => {
       command = [...command, '-e', env]
     })
   }
+  if (options.networks) {
+    options.networks.split(',').forEach(network => {
+      command = [...command, '--network', network]
+    })
+  }
+
   command = [...command, newContainer.image]
   // console.log('command:', command)
   const cpStartContainer = cp.spawnSync('docker', command)

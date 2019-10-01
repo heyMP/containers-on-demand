@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+
+  server:
+    build: ./server
+    ports:
+      - 81:3000
+    command: 'npm start'
+    volumes:
+      - ./server:/usr/share/nginx/html
