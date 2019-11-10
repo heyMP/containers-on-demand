@@ -31,7 +31,6 @@ class ContainersOnDemand extends LitElement {
     this.host = window.location.host;
     this.loading = false;
     this.error = false;
-    this.errorMessage = "";
     this._url = "";
   }
   _start() {
@@ -46,6 +45,7 @@ class ContainersOnDemand extends LitElement {
           if (!res.ok) {
             throw new Error(res);
           }
+          return res
         })
         .then(res => res.text())
         .then(res => {
@@ -56,7 +56,6 @@ class ContainersOnDemand extends LitElement {
               console.log(res)
               this.loading = false;
               this.error = true;
-              this.errorMessage = res.text();
             }, 2000);
         })
     }
