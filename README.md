@@ -27,3 +27,16 @@ docker-compose -f docker-compose.yml -f docker-compose-demo.yml up --build
 ```
 
 Visit the demo http://demo.docker.localhost (in Chrome!). Chrome automatically resolves localhost domains needed for the demo.
+
+
+## Specify Whitelist of Docker Images
+
+Use the REGISTRY_WHITELIST environment variable to whitelist your docker images.
+
+- `^(?!.*[\/| ]).*$` Accepts all docker hub maintained images 
+- `^heymp\/` Accepts all `heymp` images
+- `^rocker\/rstudio$` Accepts just `rocker/rstudio` image
+
+```bash
+REGISTRY_WHITELIST="^(?!.*[\/| ]).*$, ^heymp\/, ^rocker\/rstudio$"
+```

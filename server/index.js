@@ -1,3 +1,4 @@
+//@ts-check
 require('dotenv').config()
 const express = require('express')
 const app = express()
@@ -5,6 +6,8 @@ const cors = require('cors')
 const uuid = require('uuid/v1')
 const PORT = process.env.PORT || 3000 
 const cp = require('child_process')
+const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || '^(?!.*[\/| ]).*$'
+const validImage = require('./validImage.js')
 
 app.use(cors())
 
@@ -22,7 +25,8 @@ app.get('/', async (req, res) => {
       res.send(url)
     }
   } catch (error) {
-    res.send(error)
+    res.status(400)
+    res.send(error.toString())
   }
 })
 
@@ -30,7 +34,17 @@ const createNewContainer = (options) => {
   // Get document, or throw exception on error
   const id = uuid()
   const host = `${id}.${options.host}`
-  newContainer = {
+
+  if (!options.image) {
+    throw new Error('Image request not found')
+  }
+
+  // validate user requested image.
+  if (!validImage(options.image, REGISTRY_WHITELIST)) {
+    throw new Error('Requested image not whitelisted.')
+  }
+
+  let newContainer = {
     id,
     image: options.image,
     host,

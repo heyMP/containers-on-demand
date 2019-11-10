@@ -13,10 +13,13 @@
     "redis": "^2.8.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "mocha": "^6.2.2",
+    "assert": "^2.0.0"
   },
   "scripts": {
     "start": "nodemon index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "mocha"
   }
 }
