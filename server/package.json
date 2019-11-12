@@ -10,16 +10,21 @@
     "js-yaml": "^3.13.1",
     "uuid": "^3.3.2",
     "fetch-retry": "^2.2.0",
-    "redis": "^2.8.0"
+    "apollo-server-express": "^2.9.3",
+    "gql": "^1.1.2",
+    "graphql": "^14.5.7"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1",
     "mocha": "^6.2.2",
-    "assert": "^2.0.0"
+    "assert": "^2.0.0",
+    "nodemon": "^1.19.2",
+    "prisma2": "2.0.0-preview-12"
   },
   "scripts": {
-    "start": "nodemon index.js",
-    "dev": "nodemon index.js",
+    "start": "prisma2 lift up -c && prisma2 generate && nodemon ./index.js",
+    "migrate": "prisma2 lift up -c",
+    "migrate-commit": "prisma2 lift save",
+    "generate": "prisma2 generate",
     "test": "mocha"
   }
 }

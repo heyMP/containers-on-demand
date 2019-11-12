@@ -4,12 +4,15 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const uuid = require('uuid/v1')
+const { Photon } = require("@generated/photon");
+const photon = new Photon();
 const PORT = process.env.PORT || 3000 
 const cp = require('child_process')
 const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || '^(?!.*[\/| ]).*$'
 const validImage = require('./validImage.js')
 
 app.use(cors())
+photon.connect()
 
 app.get('/', async (req, res) => {
   try {
@@ -27,6 +30,16 @@ app.get('/', async (req, res) => {
   } catch (error) {
     res.status(400)
     res.send(error.toString())
+  }
+})
+
+app.get('/users', async (req, res) => {
+  try {
+    const users = await photon.users.findMany({
+      include: { containers: true }
+    })
+    res.json(users)
+  } catch (error) {
   }
 })
 

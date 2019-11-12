@@ -16,8 +16,25 @@ services:
       - "traefik.port=3000"
     command: 'npm start'
     environment:
+      - PRISMA_DB_PROVIDER=postgresql
+      - PRISMA_DB_URL=postgresql://prisma:prisma@postgres
       - "REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
       - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
-      - ./server/index.js:/usr/src/app/index.js
+      - /usr/src/app/node_modules
+      - ./server:/usr/src/app
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:10.3
+    restart: always
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - /var/lib/postgresql/data
+    labels:
+      - "traefik.enable=true" # Enable reverse-proxy for this service
+      - "traefik.port=5432"

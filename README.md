@@ -40,3 +40,9 @@ Use the REGISTRY_WHITELIST environment variable to whitelist your docker images.
 ```bash
 REGISTRY_WHITELIST="^(?!.*[\/| ]).*$, ^heymp\/, ^rocker\/rstudio$"
 ```
+
+### Generate New Prisma Migration
+
+```bash
+docker-compose run server yarn run migrate-commit
+```
