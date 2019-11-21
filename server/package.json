@@ -12,7 +12,13 @@
     "fetch-retry": "^2.2.0",
     "apollo-server-express": "^2.9.3",
     "gql": "^1.1.2",
-    "graphql": "^14.5.7"
+    "graphql": "^14.5.7",
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "body-parser": "^1.19.0",
+    "md5": "^2.2.1",
+    "apollo-server-express": "^2.9.11"
   },
   "devDependencies": {
     "mocha": "^6.2.2",

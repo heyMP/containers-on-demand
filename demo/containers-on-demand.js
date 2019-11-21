@@ -11,6 +11,7 @@ class ContainersOnDemand extends LitElement {
       port: { type: String },
       repo: { type: String },
       env: { type: String },
+      slug: { type: String },
       basicAuth: { type: String },
       button: { type: String },
       loading: { type: Boolean, reflect: true },
@@ -31,6 +32,7 @@ class ContainersOnDemand extends LitElement {
     this.host = window.location.host;
     this.loading = false;
     this.error = false;
+    this.slug = null
     this._url = "";
   }
   _start() {
@@ -38,9 +40,22 @@ class ContainersOnDemand extends LitElement {
     const repo = this.repo ? `&repo=${this.repo}` : "";
     const env = this.env ? `&env=${this.env}` : "";
     const basicAuth = this.basicAuth ? `&basicAuth=${this.basicAuth}` : "";
-    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}`;
+    const slug = this.slug ? `&slug=${this.slug}` : ""
+    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}${slug}`;
     if (query.length > 0) {
-      fetch(query)
+      let headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+      const jwt = localStorage.getItem('hax_authorization');
+      if (jwt) {
+        headers = {...headers, 'Authorization':  `Bearer ${jwt}`}
+      }
+      fetch(query, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ killswitch: 'killswitch'})
+      })
         .then(res => {
           if (!res.ok) {
             throw new Error(res);

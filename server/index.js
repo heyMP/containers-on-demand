@@ -2,6 +2,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const uuid = require('uuid/v1')
 const { Photon } = require("@generated/photon");
@@ -10,13 +11,69 @@ const PORT = process.env.PORT || 3000
 const cp = require('child_process')
 const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || '^(?!.*[\/| ]).*$'
 const validImage = require('./validImage.js')
+const jwt = require("jsonwebtoken");
+const HAXCMS_OAUTH_JWT_SECRET = process.env.HAXCMS_OAUTH_JWT_SECRET || "1598559ab3894f59bde1f42638c4cf9e";
+const _ = require('lodash')
+const md5 = require("md5")
+const COD_AUTH_REQUIRED = process.env.COD_AUTH_REQUIRED || false;
+const { ApolloServer, gql, AuthenticationError } = require("apollo-server-express");
 
 app.use(cors())
+app.use(bodyParser())
 photon.connect()
 
-app.get('/', async (req, res) => {
+/**
+ * Allow calls from web components with cookies
+ */
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  next();
+});
+
+/**
+ * Pick out the user if it was sent to us via JWT
+ */
+app.use(async (req, res, next) => {
   try {
-    const { host } = createNewContainer(req.query)
+    if (typeof req.headers.authorization !== "undefined") {
+      const access_token = req.headers.authorization.split(" ")[1];
+      const user = jwt.verify(access_token, HAXCMS_OAUTH_JWT_SECRET);
+      req.user = user
+      next()
+    }
+  } catch (error) {
+    if (COD_AUTH_REQUIRED) {
+      throw new AuthenticationError(error);
+    }
+  }
+  next()
+});
+
+app.all('/', async (req, res) => {
+  let host = null
+  try {
+    // assemble the params assembles query params then whatever was
+    // set in the body of the request
+    let params = { ...req.query, ...req.body }
+    // first check if the user has an existing container with that
+    // slug
+    if (_.has(req, 'user.name')) {
+      const name = req.user.name
+      const slug = (_.has(params, 'slug')) ?  `${params.slug}` : md5(`${JSON.stringify(params)}`)
+      params = {...params, slug }
+
+      // check to see if this container exists
+      const user = await getUser({ name })
+      const container = await getUserContainer({ name, slug })
+    }
+    else {
+      // if we don't have a slug then just make one up
+      if (!_.has(params, 'slug')) {
+        params = {...params, slug: uuid()}
+      }
+      const { host } = createNewContainer(params)
+    }
+
     const url = `http://${host}`
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
@@ -45,7 +102,7 @@ app.get('/users', async (req, res) => {
 
 const createNewContainer = (options) => {
   // Get document, or throw exception on error
-  const id = uuid()
+  const id = (options.slug) ? options.slug : uuid()
   const host = `${id}.${options.host}`
 
   if (!options.image) {
@@ -126,6 +183,32 @@ const createNewContainer = (options) => {
   }
   
   return newContainer
+}
+
+const getUser = async ({ name }) => {
+  try {
+    const user = await photon.users.findOne({
+      where: { name }
+    })
+    return user
+  } catch(error) {
+    const user = await photon.users.create({
+      data: { name }
+    })
+    return user
+  }
+}
+
+const getUserContainer = async ({ name, slug }) => {
+  try {
+    const containers = await photon.users.findOne({
+      where: { name }
+    }).containers()
+    const container = containers.find(c => c.slug === slug)
+    return (container) ? container : null
+  } catch(error) {
+    return null
+  }
 }
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
