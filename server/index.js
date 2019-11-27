@@ -8,21 +8,26 @@ const PORT = process.env.PORT || 3000
 const cp = require('child_process')
 const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || '^(?!.*[\/| ]).*$'
 const validImage = require('./validImage.js')
+const url = require('url')
 
 app.use(cors())
 
 app.get('/', async (req, res) => {
   try {
     const { host } = createNewContainer(req.query)
-    const url = `http://${host}`
+    let url = new URL(`http://${host}`)
+    // support path option
+    if (typeof req.query.path !== 'undefined') {
+      url = new URL(req.query.path, url);
+    }
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
       // wait 1 second to allow provisioning
-      setTimeout(() => res.redirect(url), 1000)
+      setTimeout(() => res.redirect(url.toString()), 1000)
     }
     // if not just return the url
     else {
-      res.send(url)
+      res.send(url.toString())
     }
   } catch (error) {
     res.status(400)

@@ -38,7 +38,8 @@ class ContainersOnDemand extends LitElement {
     const repo = this.repo ? `&repo=${this.repo}` : "";
     const env = this.env ? `&env=${this.env}` : "";
     const basicAuth = this.basicAuth ? `&basicAuth=${this.basicAuth}` : "";
-    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}`;
+    const path = this.path ? `&path=${this.path}` : "";
+    const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}${path}`;
     if (query.length > 0) {
       fetch(query)
         .then(res => {
@@ -49,7 +50,7 @@ class ContainersOnDemand extends LitElement {
         })
         .then(res => res.text())
         .then(res => {
-          setTimeout(() => (this._url = `${res}/${this.path}`), 4000);
+          setTimeout(() => this._url = `${res}`, 4000);
         })
         .catch(res => {
             setTimeout(() => {
