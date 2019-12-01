@@ -17,6 +17,7 @@ services:
     command: 'npm start'
     environment:
       - "REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/"
+      - "NETWORK=containers-on-demand_default"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
       - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker

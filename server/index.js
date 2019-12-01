@@ -7,6 +7,7 @@ const uuid = require('uuid/v1')
 const PORT = process.env.PORT || 3000 
 const cp = require('child_process')
 const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || '^(?!.*[\/| ]).*$'
+const NETWORK = process.env.NETWORK || null
 const validImage = require('./validImage.js')
 const url = require('url')
 
@@ -90,32 +91,49 @@ const createNewContainer = (options) => {
     newContainer['repo'] = options.repo
   }
 
-  let command = ['run', '-d', '--network', 'containers-on-demand_default']
-  newContainer.labels.forEach(label => {
-    command = [...command, '-l', label]
-  });
+  // let command = ['run', '-d', '--network', 'containers-on-demand_default']
+  let command = [
+    'run',
+    '-v',
+    '/var/run/docker.sock:/var/run/docker.sock',
+    'alexellis2/jaas',
+    'run'
+  ]
+  // add image
+  command = [...command, '--image', newContainer.image]
+  // environment vars
   if (newContainer.environment) {
     newContainer.environment.forEach(env => {
       command = [...command, '-e', env]
     })
   }
+  // default network
+  if (NETWORK) {
+    command = [...command, '--network', NETWORK]
+  }
+  // additional networks
   if (options.networks) {
     options.networks.split(',').forEach(network => {
       command = [...command, '--network', network]
     })
   }
 
-  command = [...command, newContainer.image]
-  // console.log('command:', command)
+  // @todo add labels
+  // newContainer.labels.forEach(label => {
+  //   command = [...command, '-l', label]
+  // });
+
+  console.log('command:', command)
   const cpStartContainer = cp.spawnSync('docker', command)
   const output = cpStartContainer.output.toString()
-  // console.log(output)
+  console.log(output)
   // get the new container id from output
-  const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0]
-  if (newContainer.repo) {
-    const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
-    // console.log(cpRepo.output.toString())
-  }
+  const newContainerId = /([a-zA-Z0-9]{25})/g.exec(output)[0]
+  console.log('newContainerId:', newContainerId)
+  // if (newContainer.repo) {
+  //   const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
+  //   // console.log(cpRepo.output.toString())
+  // }
   
   return newContainer
 }
