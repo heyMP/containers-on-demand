@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const uuid = require('uuid/v1')
-const PORT = process.env.PORT || 3000 
+const PORT = process.env.PORT || 3000
 const cp = require('child_process')
 const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || '^(?!.*[\/| ]).*$'
 const validImage = require('./validImage.js')
@@ -90,7 +90,7 @@ const createNewContainer = (options) => {
     newContainer['repo'] = options.repo
   }
 
-  let command = ['run', '-d', '--network', 'containers-on-demand_default']
+  let command = ['run', '-d', '--network', 'traefik-public']
   newContainer.labels.forEach(label => {
     command = [...command, '-l', label]
   });
@@ -116,7 +116,7 @@ const createNewContainer = (options) => {
     const cpRepo = cp.spawnSync('docker', ['exec', newContainerId, 'git', 'clone', newContainer.repo])
     // console.log(cpRepo.output.toString())
   }
-  
+
   return newContainer
 }
 

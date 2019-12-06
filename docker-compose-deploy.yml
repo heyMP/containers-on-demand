@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+
+  server:
+    build:
+      context: ./server
+    image: heymp/containers-on-demand:latest
+    labels:
+      - "traefik.frontend.rule=Host:cod.${HOST:-docker.localhost}"
+      - "traefik.port=3000"
+    command: 'npm start'
+    environment:
+      - 'REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
+      - /usr/bin/docker:/usr/bin/docker # give the container access to docker
+      # - ./server/index.js:/usr/src/app/index.js
+    networks:
+      - traefik-public
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.frontend.rule=Host:containers-on-demand.courses.science.psu.edu
+        - traefik.enable=true
+        - traefik.port=3000
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+
+networks:
+  traefik-public:
+    external: true
