@@ -23,7 +23,7 @@ app.get('/', async (req, res) => {
     // if the user specified redirect
     if (typeof req.query.redirect !== 'undefined') {
       // wait 1 second to allow provisioning
-      setTimeout(() => res.redirect(url.toString()), 1000)
+      setTimeout(() => res.redirect(url.toString()), 3000)
     }
     // if not just return the url
     else {
@@ -90,7 +90,7 @@ const createNewContainer = (options) => {
     newContainer['repo'] = options.repo
   }
 
-  let command = ['run', '-d', '--network', 'traefik-public']
+  let command = ['run', '-d', '--network', 'containers-on-demand_default']
   newContainer.labels.forEach(label => {
     command = [...command, '-l', label]
   });
