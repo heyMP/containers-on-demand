@@ -20,11 +20,5 @@ services:
       - 'REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
-      - /usr/bin/docker:/usr/bin/docker # give the container access to docker
+      - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
       - ./server/index.js:/usr/src/app/index.js
-
-networks:
-  agent-network:
-    attachable: true
-  traefik-public:
-    external: true

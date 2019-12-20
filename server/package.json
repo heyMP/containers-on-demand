@@ -10,7 +10,9 @@
     "js-yaml": "^3.13.1",
     "uuid": "^3.3.2",
     "fetch-retry": "^2.2.0",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "dockerode": "^3.0.2",
+    "rxjs": "^6.5.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",

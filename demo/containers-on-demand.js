@@ -50,7 +50,7 @@ class ContainersOnDemand extends LitElement {
         })
         .then(res => res.text())
         .then(res => {
-          setTimeout(() => this._url = `${res}`, 4000);
+          this._url = `${res}`
         })
         .catch(res => {
             setTimeout(() => {
