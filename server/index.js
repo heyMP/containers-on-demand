@@ -107,10 +107,11 @@ const createNewContainer = async options => {
     });
   }
   if (options.port) {
-    command = [ ...command, "--health-cmd", `curl --fail http://localhost:${Number(options.port)} || exit 1`]
+    command = [ ...command, "--health-cmd", `curl --fail http://127.0.0.1:${Number(options.port)} || exit 1`]
   }
 
   command = [...command, newContainer.image];
+  console.log('command:', command)
   const cpStartContainer = cp.spawnSync("docker", command);
   const output = cpStartContainer.output.toString();
   const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0];
@@ -152,6 +153,7 @@ const containerStatusCheck = ({ id, status }) =>
   new Promise((resolve, reject) => 
     eventsStream.subscribe({
       next(event) {
+        console.log(event.status, event.id)
         if (event.status === status && event.id === id) {
           resolve(event)
         }
