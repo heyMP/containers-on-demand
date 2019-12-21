@@ -192,6 +192,7 @@
           image="elmsln/haxcms"
           port="80"
           button="Start Lab"
+          healthcheck="curl --fail 127.0.0.1 || exit 1 "
         ></containers-on-demand>
       </split-book>
       <div class="spacer"></div>

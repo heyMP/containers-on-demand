@@ -20,8 +20,11 @@
     "assert": "^2.0.0"
   },
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "mocha"
+  },
+  "resolutions": {
+    "set-value": "^2.0.1"
   }
 }

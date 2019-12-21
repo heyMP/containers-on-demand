@@ -40,3 +40,9 @@ Use the REGISTRY_WHITELIST environment variable to whitelist your docker images.
 ```bash
 REGISTRY_WHITELIST="^(?!.*[\/| ]).*$, ^heymp\/, ^rocker\/rstudio$"
 ```
+
+## Development
+
+```bash
+docker-compose -f docker-compose-dev.yml -f docker-compose-demo.yml up --build
+```

@@ -106,8 +106,8 @@ const createNewContainer = async options => {
       command = [...command, "--network", network];
     });
   }
-  if (options.port) {
-    command = [ ...command, "--health-cmd", `curl --fail http://127.0.0.1:${Number(options.port)} || exit 1`]
+  if (options.healthcheck) {
+    command = [ ...command, "--health-cmd", options.healthcheck]
   }
 
   command = [...command, newContainer.image];
@@ -141,7 +141,11 @@ const containerStatusCheck = ({ id, status }) =>
     eventsStream.subscribe({
       next(event) {
         if (event.status === status && event.id === id) {
-          resolve(event)
+          // pause 1 second to for sure let it setup
+          setTimeout(() => {
+            console.log(event)
+            resolve(event)
+          }, 1000)
         }
       }
     })
