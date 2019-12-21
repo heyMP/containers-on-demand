@@ -8,12 +8,12 @@ const cp = require("child_process");
 const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || "^(?!.*[/| ]).*$";
 const NETWORK = process.env.NETWORK || "containers-on-demand_default";
 const validImage = require("./validImage.js");
-const Docker = require("dockerode");
-const docker = new Docker();
 const HOST = process.env.HOST || "docker.localhost";
-const { Observable } = require('rxjs')
+const { eventsStream } = require('./streams.js')
 
 app.use(cors());
+// start event stream immediately 
+eventsStream.subscribe(res => res)
 
 app.get("/", async (req, res) => {
   try {
@@ -111,10 +111,10 @@ const createNewContainer = async options => {
   }
 
   command = [...command, newContainer.image];
-  console.log('command:', command)
   const cpStartContainer = cp.spawnSync("docker", command);
   const output = cpStartContainer.output.toString();
   const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0];
+  // wait for the healthy event to come through before moving on.
   await containerStatusCheck({
     id: newContainerId,
     status: "health_status: healthy"
@@ -132,19 +132,6 @@ const createNewContainer = async options => {
   return newContainer;
 };
 
-const eventsStream = new Observable(subscriber => {
-  docker.getEvents({}, (err, data) => {
-    if (data) {
-      data.on("data", data => {
-        const event = JSON.parse(data.toString());
-        subscriber.next(event)
-      });
-    }
-  });
-});
-// start event stream immediately 
-eventsStream.subscribe(res => res)
-
 /**
  * Return a Promise once the container meets the status check.
  * @param {*} status
@@ -153,13 +140,11 @@ const containerStatusCheck = ({ id, status }) =>
   new Promise((resolve, reject) => 
     eventsStream.subscribe({
       next(event) {
-        console.log(event.status, event.id)
         if (event.status === status && event.id === id) {
           resolve(event)
         }
       }
     })
   );
-
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
