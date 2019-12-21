@@ -143,7 +143,6 @@ const containerStatusCheck = ({ id, status }) =>
         if (event.status === status && event.id === id) {
           // pause 1 second to for sure let it setup
           setTimeout(() => {
-            console.log(event)
             resolve(event)
           }, 1000)
         }
