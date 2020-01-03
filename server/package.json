@@ -14,7 +14,8 @@
     "dockerode": "^3.0.2",
     "rxjs": "^6.5.3",
     "cookie-parser": "^1.4.4",
-    "md5": "^2.2.1"
+    "md5": "^2.2.1",
+    "ping": "^0.2.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",

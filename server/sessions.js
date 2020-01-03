@@ -1,8 +1,10 @@
 //@ts-check
 const cookieParser = require("cookie-parser");
 const uuid = require("uuid/v1");
-const { getContainerHost } = require('./docker.js')
+const Docker = require("dockerode");
+const docker = new Docker();
 const SESSIONS = process.env.SESSIONS || true;
+const cp = require("child_process")
 
 let instances = []
 
@@ -11,8 +13,7 @@ module.exports = app => {
     // add the cookie parser
     app.use(cookieParser());
     // implement the middleware
-    app.use((req, res, next) => {
-      console.log(JSON.stringify(req.cookies))
+    app.use(async (req, res, next) => {
       // create the md5 hash of the unique portions of the request
       res.header("Access-Control-Allow-Origin", req.get('origin'))
       res.header("Access-Control-Allow-Credentials", true)
@@ -30,14 +31,12 @@ module.exports = app => {
       else {
         // if there is an existing cookie then check if we have existing instances
         const slug = req.slug
-        console.log(slug)
-        console.log(instances)
         const existingInstance = instances.find(
           i => i.slug === slug && i.session === sessionID
         );
         if (existingInstance) {
-          getContainerHost(existingInstance.containerID)
-          console.log('existingInstance:', existingInstance)
+          // pass on the existing host variable 
+          req.codExistingInstanceHost = existingInstance.host
         }
       }
 
@@ -50,27 +49,11 @@ module.exports = app => {
         instances = [...instances, {
           containerID: next.value.id,
           session: next.value.req.session,
-          slug: next.value.req.slug
+          slug: next.value.req.slug,
+          host: next.value.host
         }]
       }
     })
 
-    // if we do have a CODID then lets try to retrieve it
-    // const existingInstance = instances.find(
-    //   i => i.request === request && i.session === sessionID
-    // );
-    // console.log('existingInstance:', existingInstance)
-
-    // if (!existingInstance) {
-    //   instances = [...instances, sessionID]
-    // }
   }
 };
-
-// server_1         | {
-//   server_1         |   image: 'heymp/notebook',
-//   server_1         |   host: 'demo.docker.localhost',
-//   server_1         |   port: '8888',
-//   server_1         |   repo: 'https://github.com/PsuAstro528/lab1-start.git',
-//   server_1         |   path: 'notebooks/lab1-start/ex1.ipynb'
-//   server_1         | }

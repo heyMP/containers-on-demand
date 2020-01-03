@@ -26,7 +26,15 @@ eventsStream.subscribe(res => res)
 
 app.get("/", async (req, res) => {
   try {
-    const { host } = await createNewContainer(req);
+    let host = null
+    // if we have an existing host then use that
+    if (typeof req.codExistingInstanceHost !== "undefined") {
+      host = req.codExistingInstanceHost
+    }
+    else {
+      const newContainer = await createNewContainer(req);
+      host = newContainer.host
+    }
     let url = new URL(`http://${host}`);
     // support path option
     if (typeof req.query.path !== "undefined") {
@@ -131,6 +139,7 @@ const createNewContainer = async (req) => {
     hook: 'containerCreated',
     value: {
       id: newContainerId,
+      host,
       req
     }
   })
