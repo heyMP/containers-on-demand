@@ -1,7 +1,7 @@
 //@ts-check
 const cookieParser = require("cookie-parser");
 const uuid = require("uuid/v1");
-const SESSIONS = process.env.SESSIONS || true;
+const SESSIONS = process.env.SESSIONS || false;
 const HOST = process.env.HOST || 'docker.localhost';
 
 let instances = []
