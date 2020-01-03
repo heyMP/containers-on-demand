@@ -27,8 +27,8 @@ module.exports = app => {
         })
       }
       else {
-        const sessions = sessionsEnabled(req)
-        if (sessions) {
+        const _sessions = sessionsEnabled(req)
+        if (_sessions) {
           // if there is an existing cookie then check if we have existing instances
           const slug = req.slug
           const existingInstance = instances.find(
@@ -54,7 +54,6 @@ module.exports = app => {
         }]
       }
     })
-
   }
 };
 
