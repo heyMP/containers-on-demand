@@ -13,13 +13,14 @@ services:
     build:
       context: ./server
     labels:
-      - "traefik.frontend.rule=Host:cod.${HOST:-docker.localhost}"
+      - "traefik.frontend.rule=Host:${HOST:-docker.localhost}"
       - "traefik.port=3000"
     command: 'npm run dev'
     environment:
       - 'REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/'
       - 'HOST=${HOST:-docker.localhost}'
-      - 'NETWORK=${NETWORK:-containers-on-demand_server_1}'
+      - 'NETWORK=${NETWORK:-containers-on-demand_default}'
+      - 'SESSIONS=${SESSIONS:-true}'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
       - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
