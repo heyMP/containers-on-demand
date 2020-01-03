@@ -1,10 +1,7 @@
 //@ts-check
 const cookieParser = require("cookie-parser");
 const uuid = require("uuid/v1");
-const Docker = require("dockerode");
-const docker = new Docker();
 const SESSIONS = process.env.SESSIONS || true;
-const cp = require("child_process")
 
 let instances = []
 
@@ -35,7 +32,6 @@ module.exports = app => {
           i => i.slug === slug && i.session === sessionID
         );
         if (existingInstance) {
-          // pass on the existing host variable 
           req.codExistingInstanceHost = existingInstance.host
         }
       }
