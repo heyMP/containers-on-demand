@@ -126,6 +126,7 @@ const createNewContainer = async (req) => {
   if (options.healthcheck) {
     command = [ ...command, "--health-cmd", options.healthcheck]
   }
+
   command = [...command, newContainer.image];
   const cpStartContainer = cp.spawnSync("docker", command);
   const output = cpStartContainer.output.toString();

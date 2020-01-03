@@ -27,13 +27,16 @@ module.exports = app => {
         })
       }
       else {
-        // if there is an existing cookie then check if we have existing instances
-        const slug = req.slug
-        const existingInstance = instances.find(
-          i => i.slug === slug && i.session === sessionID
-        );
-        if (existingInstance) {
-          req.codExistingInstanceHost = existingInstance.host
+        const sessions = sessionsEnabled(req)
+        if (sessions) {
+          // if there is an existing cookie then check if we have existing instances
+          const slug = req.slug
+          const existingInstance = instances.find(
+            i => i.slug === slug && i.session === sessionID
+          );
+          if (existingInstance) {
+            req.codExistingInstanceHost = existingInstance.host
+          }
         }
       }
 
@@ -54,3 +57,13 @@ module.exports = app => {
 
   }
 };
+
+const sessionsEnabled = (req) => {
+  let sessions = true
+  if (typeof req.query !== 'undefined') {
+    if (typeof req.query.sessions !== 'undefined') {
+      sessions = req.query.sessions
+    }
+  }
+  return sessions
+}
