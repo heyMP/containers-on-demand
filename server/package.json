@@ -12,7 +12,9 @@
     "fetch-retry": "^2.2.0",
     "redis": "^2.8.0",
     "dockerode": "^3.0.2",
-    "rxjs": "^6.5.3"
+    "rxjs": "^6.5.3",
+    "cookie-parser": "^1.4.4",
+    "md5": "^2.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",

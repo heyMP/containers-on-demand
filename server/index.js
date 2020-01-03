@@ -1,4 +1,4 @@
-//@ts-check
+// @ts-check
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -10,14 +10,23 @@ const NETWORK = process.env.NETWORK || "containers-on-demand_default";
 const validImage = require("./validImage.js");
 const HOST = process.env.HOST || "docker.localhost";
 const { eventsStream } = require('./streams.js')
+const { Observable, Subject } = require('rxjs')
+const slug = require('./slug.js')
 
+// CORS
 app.use(cors());
+// Add unique slugs
+app.use(slug);
+// Create Hooks Stream
+app['hooks'] = new Subject()
+// Plug in Sessions
+require('./sessions.js')(app)
 // start event stream immediately 
 eventsStream.subscribe(res => res)
 
 app.get("/", async (req, res) => {
   try {
-    const { host } = await createNewContainer(req.query);
+    const { host } = await createNewContainer(req);
     let url = new URL(`http://${host}`);
     // support path option
     if (typeof req.query.path !== "undefined") {
@@ -37,10 +46,11 @@ app.get("/", async (req, res) => {
   }
 });
 
-const createNewContainer = async options => {
+const createNewContainer = async (req) => {
   // Get document, or throw exception on error
   const id = uuid();
   const host = `${id}.${HOST}`;
+  const options = req.query
 
   if (!options.image) {
     throw new Error("Image request not found");
@@ -91,7 +101,6 @@ const createNewContainer = async options => {
   if (options.repo) {
     newContainer["repo"] = options.repo;
   }
-
   let command = ["run", "-d", "--network", NETWORK];
   newContainer.labels.forEach(label => {
     command = [...command, "-l", label];
@@ -109,7 +118,6 @@ const createNewContainer = async options => {
   if (options.healthcheck) {
     command = [ ...command, "--health-cmd", options.healthcheck]
   }
-
   command = [...command, newContainer.image];
   const cpStartContainer = cp.spawnSync("docker", command);
   const output = cpStartContainer.output.toString();
@@ -119,6 +127,13 @@ const createNewContainer = async options => {
     id: newContainerId,
     status: "health_status: healthy"
   });
+  app['hooks'].next({
+    hook: 'containerCreated',
+    value: {
+      id: newContainerId,
+      req
+    }
+  })
   if (newContainer.repo) {
     const cpRepo = cp.spawnSync("docker", [
       "exec",
@@ -151,3 +166,4 @@ const containerStatusCheck = ({ id, status }) =>
   );
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
+module.exports.app = app

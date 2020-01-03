@@ -15,10 +15,10 @@ services:
     labels:
       - "traefik.frontend.rule=Host:cod.${HOST:-docker.localhost}"
       - "traefik.port=3000"
-    command: 'npm start'
+    command: 'npm run dev'
     environment:
       - 'REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
       - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
-      - ./server/index.js:/usr/src/app/index.js
+      - ./server:/usr/src/app

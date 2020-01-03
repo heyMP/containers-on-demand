@@ -1,4 +1,4 @@
-const { Observable } = require('rxjs')
+const { Observable, Subject } = require('rxjs')
 const Docker = require("dockerode");
 const docker = new Docker();
 
@@ -16,4 +16,7 @@ const eventsStream = new Observable(subscriber => {
   });
 });
 
+const hooksStream = new Subject()
+
 module.exports.eventsStream = eventsStream
+module.exports.hooksStream = hooksStream

@@ -1,3 +1,4 @@
+// killswitch
 import { LitElement, html } from "./web_modules/lit-element.js";
 import "./thin-spinner.js";
 
@@ -44,7 +45,9 @@ class ContainersOnDemand extends LitElement {
     const healthcheck = this.healthcheck ? `&healthcheck=${this.healthcheck}` : "";
     const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}${path}${healthcheck}`;
     if (query.length > 0) {
-      fetch(query)
+      fetch(query, {
+        credentials: 'include'
+      })
         .then(res => {
           if (!res.ok) {
             throw new Error(res);
