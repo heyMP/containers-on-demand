@@ -46,3 +46,12 @@ REGISTRY_WHITELIST="^(?!.*[\/| ]).*$, ^heymp\/, ^rocker\/rstudio$"
 ```bash
 docker-compose -f docker-compose-dev.yml -f docker-compose-demo.yml up --build
 ```
+
+## Server Settings
+
+I'm going off of the Traefik recommendations for setting up the server for high traffic. https://docs.traefik.io/v1.4/benchmarks/
+
+```
+bash ./system/settings.sh
+```
+
