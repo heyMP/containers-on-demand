@@ -9,8 +9,12 @@ const eventsStream = new Observable(subscriber => {
   docker.getEvents({}, (err, data) => {
     if (data) {
       data.on("data", data => {
-        const event = JSON.parse(data.toString());
-        subscriber.next(event)
+        try {
+          const event = JSON.parse(data.toString());
+          subscriber.next(event)
+        } catch(error) {
+          console.error(error)
+        }
       });
     }
   });

@@ -20,7 +20,7 @@ services:
       - 'REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/'
       - 'HOST=${HOST:-docker.localhost}'
       - 'NETWORK=${NETWORK:-containers-on-demand_default}'
-      - 'SESSIONS=${SESSIONS:-true}'
+      - 'SESSIONS=${SESSIONS:-false}'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
       - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
