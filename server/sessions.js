@@ -7,7 +7,7 @@ const HOST = process.env.HOST || 'docker.localhost';
 let instances = []
 
 module.exports = app => {
-  if (SESSIONS) {
+  if (SESSIONS === "true") {
     // add the cookie parser
     app.use(cookieParser());
     // implement the middleware
