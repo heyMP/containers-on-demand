@@ -136,6 +136,9 @@ const createNewContainer = async (req) => {
     id: newContainerId,
     status: "health_status: healthy"
   });
+  // add delay for to allow for provisioning.
+  setTimeout(() => {return}, 2000);
+  // send out hooks
   app['hooks'].next({
     hook: 'containerCreated',
     value: {

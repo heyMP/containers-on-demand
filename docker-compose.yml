@@ -23,6 +23,6 @@ services:
       - 'SESSIONS=${SESSIONS:-false}'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
-      - /usr/local/bin/docker:/usr/bin/docker # give the container access to docker
+      - /usr/bin/docker:/usr/bin/docker # give the container access to docker
       - /usr/src/app/node_modules
       - ./server:/usr/src/app
