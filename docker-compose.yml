@@ -16,11 +16,8 @@ services:
       - "traefik.frontend.rule=Host:${HOST:-docker.localhost}"
       - "traefik.port=3000"
     command: 'npm run dev'
-    environment:
-      - 'REGISTRY_WHITELIST=^heymp\/,^rocker\/,^elmsln\/'
-      - 'HOST=${HOST:-docker.localhost}'
-      - 'NETWORK=${NETWORK:-containers-on-demand_default}'
-      - 'SESSIONS=${SESSIONS:-false}'
+    env_file: 
+      - .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # connect docker to the host machine docker thread
       # - /usr/bin/docker:/usr/bin/docker # give the container access to docker (Linux)

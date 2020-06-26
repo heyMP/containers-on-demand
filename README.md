@@ -20,6 +20,12 @@ docker pull heymp/notebook
 docker pull heymp/rstudio
 ```
 
+Copy environment variables file.
+
+```
+cp .env.example .env
+```
+
 Run docker compose
 
 ```bash

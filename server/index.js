@@ -10,9 +10,9 @@ const NETWORK = process.env.NETWORK || "containers-on-demand_default";
 const validImage = require("./validImage.js");
 const HOST = process.env.HOST || "docker.localhost";
 const ORIGINS = process.env.ORIGINS || "http://demo.docker.localhost";
-const { eventsStream } = require('./streams.js')
-const { Observable, Subject } = require('rxjs')
-const slug = require('./slug.js')
+const { eventsStream } = require('./streams.js');
+const { Observable, Subject } = require('rxjs');
+const slug = require('./slug.js');
 
 // CORS
 app.use(cors({
