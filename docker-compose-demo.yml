@@ -7,4 +7,9 @@ services:
       - "traefik.frontend.rule=Host:demo.${HOST:-docker.localhost}"
       - "traefik.port=80"
     volumes:
-      - ./demo:/usr/share/nginx/html
+      - /app/config.js
+      - ./demo:/app
+    environment:
+      - "CONFIG_VARS=CONTAINERS_ON_DEMAND_ENDPOINT,CONTAINERS_ON_DEMAND_ORIGINS"
+      - "CONTAINERS_ON_DEMAND_ENDPOINT=${HOST:-http://docker.localhost}"
+      - "CONTAINERS_ON_DEMAND_ORIGINS=${ORIGINS:-http://demo.docker.localhost}"

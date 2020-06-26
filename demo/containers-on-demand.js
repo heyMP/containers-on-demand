@@ -13,12 +13,12 @@ class ContainersOnDemand extends LitElement {
       repo: { type: String },
       env: { type: String },
       healthcheck: { type: String },
-      sessions: {type: Boolean},
+      sessions: { type: Boolean },
       basicAuth: { type: String },
       button: { type: String },
       loading: { type: Boolean, reflect: true },
       error: { type: Boolean, reflect: true },
-      _url: { type: String }
+      _url: { type: String },
     };
   }
   constructor() {
@@ -29,47 +29,57 @@ class ContainersOnDemand extends LitElement {
     this.port = "80";
     this.repo = "";
     this.env = "";
-    this.healthcheck = ""
-    this.sessions = true
+    this.healthcheck = "";
+    this.sessions = true;
     this.button = "";
     this.basicAuth = "";
     this.host = window.location.host;
     this.loading = false;
     this.error = false;
     this._url = "";
+
+    // See endpoint
+    if (typeof window.__env !== "undefined") {
+      if (typeof window.__env.CONTAINERS_ON_DEMAND_ENDPOINT !== "undefined") {
+        this.endpoint = window.__env.CONTAINERS_ON_DEMAND_ENDPOINT;
+      }
+    }
   }
+
   _start() {
     this.loading = true;
     const repo = this.repo ? `&repo=${this.repo}` : "";
     const env = this.env ? `&env=${this.env}` : "";
     const basicAuth = this.basicAuth ? `&basicAuth=${this.basicAuth}` : "";
     const path = this.path ? `&path=${this.path}` : "";
-    const healthcheck = this.healthcheck ? `&healthcheck=${this.healthcheck}` : "";
+    const healthcheck = this.healthcheck
+      ? `&healthcheck=${this.healthcheck}`
+      : "";
     const sessions = this.sessions ? `&sessions=${this.sessions}` : "";
     const query = `${this.endpoint}?image=${this.image}&host=${this.host}&port=${this.port}${repo}${env}${basicAuth}${path}${healthcheck}`;
     if (query.length > 0) {
-      let fetchOptions = {}
+      let fetchOptions = {};
       if (this.sessions) {
-        fetchOptions = {...fetchOptions, credentials: 'include'}
+        fetchOptions = { ...fetchOptions, credentials: "include" };
       }
       fetch(query, fetchOptions)
-        .then(res => {
+        .then((res) => {
           if (!res.ok) {
             throw new Error(res);
           }
-          return res
+          return res;
         })
-        .then(res => res.text())
-        .then(res => {
-          this._url = `${res}`
+        .then((res) => res.text())
+        .then((res) => {
+          this._url = `${res}`;
         })
-        .catch(res => {
-            setTimeout(() => {
-              console.log(res)
-              this.loading = false;
-              this.error = true;
-            }, 2000);
-        })
+        .catch((res) => {
+          setTimeout(() => {
+            console.log(res);
+            this.loading = false;
+            this.error = true;
+          }, 2000);
+        });
     }
   }
   render() {
@@ -161,9 +171,7 @@ class ContainersOnDemand extends LitElement {
         this.button
         ? // if the button is in loading state then show the spinner
           this.loading
-          ? html`
-              <thin-spinner .loading="${this.loading}"></thin-spinner>
-            `
+          ? html` <thin-spinner .loading="${this.loading}"></thin-spinner> `
           : // if it's in error state then show the error
           this.error
           ? html`
@@ -177,9 +185,7 @@ class ContainersOnDemand extends LitElement {
                 ${this.button}
               </button>
             `
-        : html`
-            Could not resolve container
-          `}
+        : html` Could not resolve container `}
     `;
   }
 }

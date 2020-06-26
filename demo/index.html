@@ -24,6 +24,7 @@
         width: 100%;
       }
     </style>
+    <script src="/config.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -66,7 +67,6 @@
         <h2 slot="right-title">Assignment</h2>
         <containers-on-demand
           slot="right"
-          endpoint="http://docker.localhost"
           image="heymp/notebook"
           port="8888"
           path="notebooks/lab1-start/ex1.ipynb"
@@ -107,7 +107,6 @@
         <h2 slot="right-title">RStudio Lab</h2>
         <containers-on-demand
           slot="right"
-          endpoint="http://docker.localhost"
           image="heymp/activity-graph-replication"
           port="8787"
           env="DISABLE_AUTH=true"
@@ -147,7 +146,6 @@
         <h2 slot="right-title">Shiny Lab</h2>
         <containers-on-demand
           slot="right"
-          endpoint="http://docker.localhost"
           image="rocker/shiny"
           port="3838"
           env="DISABLE_AUTH=true"
@@ -188,7 +186,6 @@
         <h2 slot="right-title">HAXcms Server</h2>
         <containers-on-demand
           slot="right"
-          endpoint="http://docker.localhost"
           image="elmsln/haxcms"
           port="80"
           button="Start Lab"
@@ -228,7 +225,6 @@
         <h2 slot="right-title">PSU Notebook Selfchecks</h2>
         <containers-on-demand
           slot="right"
-          endpoint="http://docker.localhost"
           image="heymp/psumathlib"
           port="8888"
           button="Start Lab"

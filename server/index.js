@@ -9,12 +9,18 @@ const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || "^(?!.*[/| ]).*$";
 const NETWORK = process.env.NETWORK || "containers-on-demand_default";
 const validImage = require("./validImage.js");
 const HOST = process.env.HOST || "docker.localhost";
+const ORIGINS = process.env.ORIGINS || "http://demo.docker.localhost";
 const { eventsStream } = require('./streams.js')
 const { Observable, Subject } = require('rxjs')
 const slug = require('./slug.js')
 
 // CORS
-app.use(cors());
+app.use(cors({
+  // support whitelist urls
+  origin: ORIGINS,
+  // support sessions
+  credentials: true
+}));
 // Add unique slugs
 app.use(slug);
 // Create Hooks Stream
@@ -46,6 +52,7 @@ app.get("/", async (req, res) => {
     }
     // if not just return the url
     else {
+      res.status(200);
       res.send(url.toString());
     }
   } catch (error) {
@@ -136,8 +143,8 @@ const createNewContainer = async (req) => {
     id: newContainerId,
     status: "health_status: healthy"
   });
-  // add delay for to allow for provisioning.
-  setTimeout(() => {return}, 2000);
+  // // add delay for to allow for provisioning.
+  // setTimeout(() => {return}, 2000);
   // send out hooks
   app['hooks'].next({
     hook: 'containerCreated',
