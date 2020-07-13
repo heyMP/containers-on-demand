@@ -13,6 +13,7 @@ const ORIGINS = process.env.ORIGINS || "http://demo.docker.localhost";
 const { eventsStream } = require('./streams.js');
 const { Observable, Subject } = require('rxjs');
 const slug = require('./slug.js');
+const cleanup = require("./cleanup.js");
 
 // CORS
 app.use(cors({
@@ -56,6 +57,7 @@ app.get("/", async (req, res) => {
       res.send(url.toString());
     }
   } catch (error) {
+    console.log('error:', error)
     res.status(400);
     res.send(error.toString());
   }
@@ -116,7 +118,7 @@ const createNewContainer = async (req) => {
   if (options.repo) {
     newContainer["repo"] = options.repo;
   }
-  let command = ["run", "-d", "--network", NETWORK];
+  let command = ["run", "-d", "--network", NETWORK, "-l", "com.heymp.cod"];
   newContainer.labels.forEach(label => {
     command = [...command, "-l", label];
   });
@@ -136,7 +138,9 @@ const createNewContainer = async (req) => {
 
   command = [...command, newContainer.image];
   const cpStartContainer = cp.spawnSync("docker", command);
+  console.log('start')
   const output = cpStartContainer.output.toString();
+  console.log('stop')
   const newContainerId = /([a-zA-Z0-9]{64})/g.exec(output)[0];
   // wait for the healthy event to come through before moving on.
   await containerStatusCheck({
@@ -184,6 +188,13 @@ const containerStatusCheck = ({ id, status }) =>
       }
     })
   );
+
+/**
+ * Run cleanup every minute
+ */
+setTimeout(() => {
+  cleanup();
+}, 60000)
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
 module.exports.app = app

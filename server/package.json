@@ -15,7 +15,9 @@
     "rxjs": "^6.5.3",
     "cookie-parser": "^1.4.4",
     "md5": "^2.2.1",
-    "ping": "^0.2.2"
+    "ping": "^0.2.2",
+    "dirty-json": "^0.9.1",
+    "moment": "^2.27.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",
