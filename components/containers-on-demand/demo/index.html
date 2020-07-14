@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      background: #fafafa;
+      margin: 0;
+      padding: 0;
+    }
+    containers-on-demand {
+      min-height: 100vh;
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div id="demo"></div>
+
+  <script type="module">
+    import { html, render } from 'lit-html';
+    import '../containers-on-demand.js';
+
+    render(
+      html`
+        <containers-on-demand
+          slot="right"
+          image="heymp/notebook"
+          port="8888"
+          path="notebooks/lab1-start/ex1.ipynb"
+          repo="https://github.com/PsuAstro528/lab1-start.git"
+          button="Start Lab"
+          endpoint="http://docker.localhost"
+        ></containers-on-demand>
+      `,
+      document.querySelector('#demo')
+    );
+  </script>
+</body>
+</html>

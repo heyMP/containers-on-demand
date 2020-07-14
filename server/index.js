@@ -5,8 +5,8 @@ const cors = require("cors");
 const uuid = require("uuid/v1");
 const PORT = process.env.PORT || 3000;
 const cp = require("child_process");
-const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || "^(?!.*[/| ]).*$";
-const NETWORK = process.env.NETWORK || "containers-on-demand_default";
+const REGISTRY_WHITELIST = process.env.REGISTRY_WHITELIST || ".*";
+const NETWORK = process.env.NETWORK;
 const validImage = require("./validImage.js");
 const HOST = process.env.HOST || "docker.localhost";
 const ORIGINS = process.env.ORIGINS || "http://demo.docker.localhost";
@@ -118,7 +118,10 @@ const createNewContainer = async (req) => {
   if (options.repo) {
     newContainer["repo"] = options.repo;
   }
-  let command = ["run", "-d", "--network", NETWORK, "-l", "com.heymp.cod"];
+  let command = ["run", "-d", "-l", "com.heymp.cod"];
+  if (NETWORK) {
+    command = [...command, "--network", NETWORK]
+  }
   newContainer.labels.forEach(label => {
     command = [...command, "-l", label];
   });
