@@ -192,7 +192,7 @@ const containerStatusCheck = ({ id, status }) =>
 /**
  * Run cleanup every minute
  */
-setTimeout(() => {
+setInterval(() => {
   cleanup();
 }, 60000)
 
