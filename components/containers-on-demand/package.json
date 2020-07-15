@@ -1,6 +1,6 @@
 {
   "name": "containers-on-demand",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Initialize containers-on-demand projects and render in place.",
   "author": "containers-on-demand",
   "license": "MIT",

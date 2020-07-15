@@ -1,6 +1,6 @@
 // killswitch
-import { LitElement, html } from "lit-element";
-import "@eberlywc/thin-spinner";
+import { LitElement, html } from "lit-element/lit-element.js";
+import "@eberlywc/thin-spinner/thin-spinner.js";
 
 export class ContainersOnDemand extends LitElement {
   static get properties() {
