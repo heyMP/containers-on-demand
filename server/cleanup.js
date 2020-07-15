@@ -14,19 +14,21 @@ module.exports = () => {
     "--filter",
     "label=com.heymp.cod",
   ]);
-  const output = `[${spawn.output.toString()}]`;
-  const containers = dJSON.parse(output);
+  if (spawn.output) {
+    const output = `[${spawn.output.toString()}]`;
+    const containers = dJSON.parse(output);
 
-  if (typeof containers === "object" && containers.length > 0) {
-    containers.forEach((container) => {
-      const date = Date.parse(container.CreatedAt);
-      const older = moment(date).isBefore(
-        moment().subtract(MAX_CONTAINER_AGE, "hours")
-      );
-      // if it's older than max container age
-      if (older) {
-        cp.spawnSync("docker", ["rm", container.ID]);
-      }
-    });
+    if (typeof containers === "object" && containers.length > 0) {
+      containers.forEach((container) => {
+        const date = Date.parse(container.CreatedAt);
+        const older = moment(date).isBefore(
+          moment().subtract(MAX_CONTAINER_AGE, "hours")
+        );
+        // if it's older than max container age
+        if (older) {
+          cp.spawnSync("docker", ["rm", container.ID]);
+        }
+      });
+    }
   }
 };
