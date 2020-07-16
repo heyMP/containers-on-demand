@@ -23,3 +23,9 @@ services:
       - ${DOCKER_EXE-/usr/local/bin/docker}:/usr/local/bin/docker # give the container access to docker
       - /usr/src/app/node_modules
       - ./server:/usr/src/app
+  
+  rservice:
+    image: heymp/r-service
+    labels:
+      - "traefik.frontend.rule=Host:r-service.${HOST:-docker.localhost}"
+      - "traefik.port=3000"
