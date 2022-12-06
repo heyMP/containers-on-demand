@@ -796,10 +796,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@eberlywc/thin-spinner@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@eberlywc/thin-spinner/-/thin-spinner-0.0.10.tgz#d97e912fe2cc96771abf7de1c2023b702802f96e"
-  integrity sha512-BXw6To5oGaWwefT40WxRrdTNeaEXAe+bYFjGhYEWrMrOnQSJ8Fe6G5w3iX1bzXLgbr+VYm9p444EcfMHdPuD2g==
+"@eberlywc/thin-spinner@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@eberlywc/thin-spinner/-/thin-spinner-0.0.11.tgz#2870ab36c1c78dc599f0e2c988976a679ddb3e9a"
+  integrity sha512-UEqDMzXV0E1NYrl9QTd6PnBf1/2cqzDW9OsXPNhor6T9G5sZJul+wtoIgVt8AGkEXipYSITa4/+FjnU78zbUTA==
   dependencies:
     lit-element "^2.3.1"
 
@@ -1874,9 +1874,9 @@ decamelize@^1.1.2:
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 dedent@^0.7.0:
   version "0.7.0"
